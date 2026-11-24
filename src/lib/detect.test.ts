@@ -8,28 +8,7 @@ import {
   detectSuccessAfterFailures,
 } from './detect'
 import { parseLog } from './parser'
-import type { AuthEvent } from './types'
-
-const T0 = Date.UTC(2026, 10, 23)
-const SEC = 1000
-const MIN = 60 * SEC
-const HOUR = 60 * MIN
-
-function event(kind: AuthEvent['kind'], ip: string, offsetMs: number, user = 'root'): AuthEvent {
-  return {
-    timestamp: new Date(T0 + offsetMs),
-    host: 'web01',
-    pid: 1,
-    kind,
-    user,
-    ip,
-    port: 22222,
-    method: 'password',
-  }
-}
-const failed = (ip: string, offsetMs: number, user = 'root') => event('failed', ip, offsetMs, user)
-const accepted = (ip: string, offsetMs: number, user = 'deploy') => event('accepted', ip, offsetMs, user)
-const series = (n: number, make: (i: number) => AuthEvent) => Array.from({ length: n }, (_, i) => make(i))
+import { HOUR, MIN, SEC, accepted, event, failed, series } from './testHelpers'
 
 describe('detectBruteForce', () => {
   const IP = '203.0.113.9'
