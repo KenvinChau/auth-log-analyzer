@@ -4,6 +4,14 @@ import { parseLine, parseLog } from './parser'
 const YEAR = 2026
 
 describe('parseLine', () => {
+  it('keeps hostile usernames as plain data', () => {
+    const e = parseLine(
+      'Nov 23 12:00:00 web01 sshd[1]: Failed password for <svg/onload=alert(1)> from 203.0.113.9 port 4444 ssh2',
+      YEAR,
+    )
+    expect(e?.user).toBe('<svg/onload=alert(1)>')
+  })
+
   it('parses a failed password for an existing user', () => {
     const e = parseLine(
       'Nov 23 02:52:08 web01 sshd[2015]: Failed password for deploy from 198.51.100.22 port 49213 ssh2',

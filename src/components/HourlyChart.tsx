@@ -10,7 +10,7 @@ export function HourlyChart({ data }: { data: HourBucket[] }) {
   })
 
   return (
-    <div role="img" aria-label="Bar chart of failed and accepted logins per hour" className="h-64 w-full">
+    <div role="img" aria-label="Bar chart of failed and accepted logins per hour" className="h-72 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
