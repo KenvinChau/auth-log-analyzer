@@ -12,7 +12,7 @@ interface InputPanelProps {
   year: number
   onYearChange: (year: number) => void
   onLoadSample: () => void
-  onText: (text: string, label: string) => void
+  onText: (text: string, label: string, year?: number) => void
 }
 
 export function InputPanel({ year, onYearChange, onLoadSample, onText }: InputPanelProps) {
@@ -30,7 +30,8 @@ export function InputPanel({ year, onYearChange, onLoadSample, onText }: InputPa
     try {
       const text = await file.text()
       setError(null)
-      onText(text, file.name)
+      const fileYear = new Date(file.lastModified).getFullYear()
+      onText(text, file.name, YEARS.includes(fileYear) ? fileYear : undefined)
     } catch {
       setError('Could not read that file.')
     }
@@ -73,8 +74,8 @@ export function InputPanel({ year, onYearChange, onLoadSample, onText }: InputPa
         </label>
       </div>
       <p className="mt-2 text-xs text-slate-500">
-        Syslog timestamps have no year, so pick the year the log was written. Files are analyzed
-        locally in your browser and never uploaded.
+        Syslog timestamps have no year. Uploads default to the file's last-modified year; adjust it
+        if needed. Files are analyzed locally in your browser and never uploaded.
       </p>
 
       <details className="mt-3">

@@ -38,7 +38,10 @@ export default function App() {
           year={year}
           onYearChange={setYear}
           onLoadSample={loadSample}
-          onText={(text, label) => setSource({ text, label })}
+          onText={(text, label, suggestedYear) => {
+            setSource({ text, label })
+            if (suggestedYear !== undefined) setYear(suggestedYear)
+          }}
         />
 
         {parsed.events.length === 0 ? (

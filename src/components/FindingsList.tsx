@@ -8,7 +8,12 @@ const SEVERITY_STYLES: Record<Severity, string> = {
 }
 
 // Log times are stored as UTC; display them as UTC so they match the log text
-const dayFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' })
+const dayFormat = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  timeZone: 'UTC',
+})
 const clockFormat = new Intl.DateTimeFormat('en-GB', {
   hour: '2-digit',
   minute: '2-digit',
