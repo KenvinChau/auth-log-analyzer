@@ -8,9 +8,8 @@ const SEVERITY_STYLES: Record<Severity, string> = {
 }
 
 // Log times are stored as UTC; display them as UTC so they match the log text
-const timeFormat = new Intl.DateTimeFormat('en-GB', {
-  month: 'short',
-  day: 'numeric',
+const dayFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' })
+const clockFormat = new Intl.DateTimeFormat('en-GB', {
   hour: '2-digit',
   minute: '2-digit',
   hour12: false,
@@ -18,9 +17,11 @@ const timeFormat = new Intl.DateTimeFormat('en-GB', {
 })
 
 function formatRange(start: Date, end: Date): string {
-  return start.getTime() === end.getTime()
-    ? timeFormat.format(start)
-    : `${timeFormat.format(start)} to ${timeFormat.format(end)}`
+  const from = `${dayFormat.format(start)}, ${clockFormat.format(start)}`
+  if (start.getTime() === end.getTime()) return from
+  const sameDay = dayFormat.format(start) === dayFormat.format(end)
+  const to = sameDay ? clockFormat.format(end) : `${dayFormat.format(end)}, ${clockFormat.format(end)}`
+  return `${from} to ${to}`
 }
 
 export function FindingsList({ findings }: { findings: Finding[] }) {
@@ -44,7 +45,7 @@ export function FindingsList({ findings }: { findings: Finding[] }) {
           </div>
           <p className="mt-2 text-sm text-slate-200">{f.detail}</p>
           <p className="mt-1 text-xs text-slate-400">
-            {formatRange(f.start, f.end)} (log time) · IPs: {f.ips.join(', ')}
+            {formatRange(f.start, f.end)} UTC · IPs: {f.ips.join(', ')}
           </p>
         </li>
       ))}
